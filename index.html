@@ -332,6 +332,10 @@
             if (index !== -1) items.splice(index, 1);
         }
 
+        function hasChanges(original, current, fields) {
+            return fields.some(field => original[field] !== current[field]);
+        }
+
         function showToast(message, type = "success") {
             const container = document.getElementById("toast-container");
             const toast = document.createElement("div");
@@ -479,6 +483,8 @@
         extinguisherForm.addEventListener("submit", function (event) {
             event.preventDefault();
 
+            const isEditing = Boolean(extinguisherId.value);
+
             const data = {
                 typeIndex: Number(extinguisherType.value),
                 roomId: extinguisherRoom.value,
@@ -488,19 +494,28 @@
                 validUntil: extinguisherValidUntil.value
             };
 
-            if (extinguisherId.value) {
+            let message;
+
+            if (isEditing) {
                 const extinguisher = findById(extinguishers, extinguisherId.value);
-                Object.assign(extinguisher, data);
+
+                if (hasChanges(extinguisher, data, ["typeIndex", "roomId", "status", "checkDate", "inspectorId", "validUntil"])) {
+                    Object.assign(extinguisher, data);
+                    message = "✅ Пожарогасителят е редактиран.";
+                } else {
+                    message = "ℹ️ Няма направени промени.";
+                }
             } else {
                 extinguishers.push({
                     id: crypto.randomUUID(),
                     ...data
                 });
+                message = "✅ Пожарогасителят е добавен.";
             }
 
             resetExtinguisherForm();
             renderExtinguishers();
-            showToast(Boolean(extinguisherId.value) ? "✅ Пожарогасителят е редактиран." : "✅ Пожарогасителят е добавен.");
+            showToast(message);
         });
 
         function editExtinguisher(id) {
@@ -559,24 +574,35 @@
         roomForm.addEventListener("submit", function (event) {
             event.preventDefault();
 
+            const isEditing = Boolean(roomId.value);
+
             const name = roomName.value.trim();
 
             if (!name) return;
 
-            if (roomId.value) {
+            let message;
+
+            if (isEditing) {
                 const room = rooms.find(room => room.id === roomId.value);
-                room.name = name;
+
+                if (room.name !== name) {
+                    room.name = name;
+                    message = "✅ Помещението е редактирано.";
+                } else {
+                    message = "ℹ️ Няма направени промени.";
+                }
             } else {
                 rooms.push({
                     id: crypto.randomUUID(),
                     name: name
                 });
+                message = "✅ Помещението е добавено.";
             }
 
             resetRoomForm();
             renderRooms();
             fillExtinguisherSelects();
-            showToast(Boolean(roomId.value) ? "✅ Помещението е редактирано." : "✅ Помещението е добавено.");
+            showToast(message);
         });
 
         function editRoom(id) {
@@ -638,22 +664,31 @@
 
             if (!code || !name) return;
 
+            let message;
+
             if (inspectorId.value) {
                 const inspector = inspectors.find(inspector => inspector.id === inspectorId.value);
-                inspector.code = code;
-                inspector.name = name;
+
+                if (inspector.code !== code || inspector.name !== name) {
+                    inspector.code = code;
+                    inspector.name = name;
+                    message = "✅ Проверяващият е редактиран.";
+                } else {
+                    message = "ℹ️ Няма направени промени.";
+                }
             } else {
                 inspectors.push({
                     id: crypto.randomUUID(),
                     code: code,
                     name: name
                 });
+                message = "✅ Проверяващият е добавен.";
             }
 
             resetInspectorForm();
             renderInspectors();
             fillExtinguisherSelects();
-            showToast(isEditing ? "✅ Проверяващият е редактиран." : "✅ Проверяващият е добавен.");
+            showToast(message);
         });
 
         function editInspector(id) {
