@@ -12,7 +12,8 @@
 <body>
 
     <header>
-        <h1>🧯 Регистър на пожарогасители</h1>
+        <h1>🧯 Дневеник на пожарогасителите</h1>
+        <h2>на звено "Дизелово Депо"</h2>
     </header>
 
     <nav>
@@ -48,10 +49,12 @@
                 <input type="hidden" id="extinguisher-id">
 
                 <div>
-                    <label for="extinguisher-type">Вид:</label>
-                    <select id="extinguisher-type" required>
-                        <option value="" selected disabled>-- избери вид --</option>
-                    </select>
+                    <div id="extinguisher-type-container" hidden>
+                        <label for="extinguisher-type">Вид:</label>
+                        <select id="extinguisher-type" required>
+                            <option value="" selected disabled>-- избери вид --</option>
+                        </select>
+                    </div>
 
                     <label for="extinguisher-room">Помещение:</label>
                     <select id="extinguisher-room" required>
@@ -73,7 +76,7 @@
                     <select id="extinguisher-inspector" required>
                         <option value="" selected disabled>-- избери проверяващ --</option>
                     </select>
-
+                    <br>
                     <label for="extinguisher-valid-until">Забележка / Годен до:</label>
                     <input type="month" id="extinguisher-valid-until">
 
@@ -143,7 +146,7 @@
         </section>
 
         <section id="inspectors">
-            <h2>👤 Проверяващи</h2>
+            <h2>👤 Извършващи проверката</h2>
 
             <form id="inspector-form">
                 <input type="hidden" id="inspector-id">
@@ -174,8 +177,11 @@
         </section>
 
     </main>
-
+    <script src="./js/data.js"></script>
+    <script src="./js/helpers.js"></script>
     <script src="./js/script.js"></script>
+
+
 
 </body>
 
