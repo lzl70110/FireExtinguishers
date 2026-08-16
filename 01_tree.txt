@@ -1,5 +1,5 @@
 Folder PATH listing for volume Windows
-Volume serial number is 000000C4 687D:BB85
+Volume serial number is 00000069 687D:BB85
 C:.
 |   01_tree.txt
 |   index.html
@@ -18,9 +18,10 @@ C:.
 |       
 \---js
         data.js
+        dom.js
         extinguishers.js
         helpers.js
-        inspector.js
+        inspectors.js
         rooms.js
         script.js
         ui.js
